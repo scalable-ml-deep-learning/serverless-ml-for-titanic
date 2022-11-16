@@ -24,17 +24,22 @@ def g():
     from hsml.schema import Schema
     from hsml.model_schema import ModelSchema
     import joblib
-
+    import hsfs
+    
+    
+    file_key = open("./ENV_VARS/HOPSWORKS_API_KEY", "r")
+    HOPSWORKS_API_KEY = file_key.read()
     # You have to set the environment variable 'HOPSWORKS_API_KEY' for login to succeed
-    project = hopsworks.login()
+    project = hopsworks.login(port=443, api_key_value=HOPSWORKS_API_KEY.strip())
     # fs is a reference to the Hopsworks Feature Store
     fs = project.get_feature_store()
-
+    print("###fs: ", fs)
     # The feature view is the input set of features for your model. The features can come from different feature groups.    
     # You can select features from different feature groups and join them together to create a feature view
     try: 
         feature_view = fs.get_feature_view(name="iris_modal", version=1)
     except:
+        print("EXCEPTION FOUND")
         iris_fg = fs.get_feature_group(name="iris_modal", version=1)
         query = iris_fg.select_all()
         feature_view = fs.create_feature_view(name="iris_modal",

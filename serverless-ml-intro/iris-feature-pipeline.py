@@ -19,7 +19,7 @@ def g():
     file_key = open("./ENV_VARS/HOPSWORKS_API_KEY", "r")
     HOPSWORKS_API_KEY = file_key.read()
     print(HOPSWORKS_API_KEY)
-    project = hopsworks.login(api_key_value=HOPSWORKS_API_KEY)
+    project = hopsworks.login(port=443, api_key_value=HOPSWORKS_API_KEY.strip())
     fs = project.get_feature_store()
     iris_df = pd.read_csv("https://repo.hops.works/master/hopsworks-tutorials/data/iris.csv")
     iris_fg = fs.get_or_create_feature_group(
