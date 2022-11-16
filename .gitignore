@@ -2,3 +2,8 @@
 serverless-ml-intro/ENV_VARS/
 # Everything beginning with .
 .*
+# In serverless-ml-intro
+serverless-ml-intro/.*
+serverless-ml-intro/ca_chain
+serverless-ml-intro/certfile
+serverless-ml-intro/keyfile
