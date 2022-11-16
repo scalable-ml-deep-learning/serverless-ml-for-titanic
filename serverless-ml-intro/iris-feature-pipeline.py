@@ -1,7 +1,7 @@
 import os
 import modal
     
-LOCAL=False
+LOCAL=True
 
 if LOCAL == False:
    stub = modal.Stub()
@@ -15,8 +15,11 @@ if LOCAL == False:
 def g():
     import hopsworks
     import pandas as pd
-
-    project = hopsworks.login()
+    
+    file_key = open("./ENV_VARS/HOPSWORKS_API_KEY", "r")
+    HOPSWORKS_API_KEY = file_key.read()
+    print(HOPSWORKS_API_KEY)
+    project = hopsworks.login(api_key_value=HOPSWORKS_API_KEY)
     fs = project.get_feature_store()
     iris_df = pd.read_csv("https://repo.hops.works/master/hopsworks-tutorials/data/iris.csv")
     iris_fg = fs.get_or_create_feature_group(

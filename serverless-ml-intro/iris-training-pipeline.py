@@ -75,7 +75,6 @@ def g():
     joblib.dump(model, model_dir + "/iris_model.pkl")
     fig.savefig(model_dir + "/confusion_matrix.png")    
 
-
     # Specify the schema of the model's input/output using the features (X_train) and labels (y_train)
     input_schema = Schema(X_train)
     output_schema = Schema(y_train)
