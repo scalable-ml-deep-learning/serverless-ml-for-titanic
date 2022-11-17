@@ -2,13 +2,13 @@ import os
 import modal
     
 BACKFILL=False
-LOCAL=True
+LOCAL=False
 
-if LOCAL == True:
+if LOCAL == False:
    stub = modal.Stub()
-   image = modal.Image.debian_slim().pip_install(["hopsworks","joblib","seaborn","sklearn","dataframe-image"]) 
+   image = modal.Image.debian_slim().pip_install(["hopsworks==3.0.4","joblib","seaborn","scikit-learn","dataframe-image"]) 
 
-   @stub.function(image=image, schedule=modal.Period(days=1), secret=modal.Secret.from_name("scalable"))
+   @stub.function(image=image, schedule=modal.Period(days=1), secret=modal.Secret.from_name("HOPSWORKS_API_KEY"))
    def f():
        g()
 
