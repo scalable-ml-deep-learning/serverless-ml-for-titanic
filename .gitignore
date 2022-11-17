@@ -1,5 +1,3 @@
-# Environmental Variables
-serverless-ml-intro/ENV_VARS/
 # Everything beginning with .
 .*
 # In serverless-ml-intro
@@ -7,3 +5,7 @@ serverless-ml-intro/.*
 serverless-ml-intro/ca_chain
 serverless-ml-intro/certfile
 serverless-ml-intro/keyfile
+serverless-ml-intro/actual_iris.png
+serverless-ml-intro/latest_iris.png
+serverless-ml-intro/confusion_matrix.png
+serverless-ml-intro/df_recent.png
