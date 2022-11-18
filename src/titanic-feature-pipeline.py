@@ -8,7 +8,7 @@ fs = project.get_feature_store()
 
 titanic_df = pd.read_csv("../data/titanic.csv")
 
-titanic_df.head()
+print(titanic_df.head())
 
 '''
 titanic_fg = fs.get_or_create_feature_group(
