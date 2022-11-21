@@ -19,7 +19,7 @@ def generate_passenger(survived):
     import pandas as pd
     import random
     if survived :
-        df = pd.DataFrame({ "pclass": [random.choice([2,1])],
+        df = pd.DataFrame({"pclass": [random.choice([2,1])],
                         "sex": [random.choice([0,1])],
                         "age": [random.uniform(0, 99)],
                         "fare": [random.uniform(50, 500)]
@@ -65,6 +65,7 @@ def g():
     fs = project.get_feature_store()
 
     passenger_df = get_random_passenger()
+    print(passenger_df)
 
     titanic_fg = fs.get_feature_group(name="titanic_modal",version=1)
     titanic_fg.insert(passenger_df, write_options={"wait_for_job" : False})

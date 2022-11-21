@@ -44,6 +44,8 @@ def g():
 
     # You can read training data, randomly split into train/test sets of features (X) and labels (y)        
     X_train, X_test, y_train, y_test = feature_view.train_test_split(0.2)
+    print("X train: ", X_train, "Y train: ", y_train)
+
 
     # Train our model with the Scikit-learn LogisticRegression algorithm using our features (X_train) and labels (y_train)
     model = LogisticRegression()
@@ -56,7 +58,6 @@ def g():
     metrics = classification_report(y_test, y_pred, output_dict=True)
     results = confusion_matrix(y_test, y_pred)
 
-    #REVIEW THE CONFUSION MATRIX!!!
     # Create the confusion matrix as a figure, we will later store it as a PNG image file
     df_cm = pd.DataFrame(results, ['True Survived', 'True Dead'],
                          ['Pred Survived', 'Pred Dead'])

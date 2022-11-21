@@ -40,9 +40,12 @@ def g():
     offset = 1
     passenger = y_pred[y_pred.size-offset]
     print("Passenger predicted: ", passenger)
-    
-    passenger_path =  "../img/" + str(passenger) + ".png"
-    img = Image.open(passenger_path, mode='r')
+
+    passenger_url = "https://raw.githubusercontent.com/scalable-ml-deep-learning/serverless-ml-for-titanic/feature-brando/img/" + str(passenger) + ".png"
+    img = Image.open(requests.get(passenger_url, stream=True).raw)  
+    #passenger_path =  "../img/" + str(passenger) + ".png"
+    #img = Image.open(passenger_path, mode='r')
+       
     img.save("./latest_passenger.png")
     dataset_api = project.get_dataset_api()
     dataset_api.upload("./latest_passenger.png", "Resources/images", overwrite=True)
@@ -52,8 +55,12 @@ def g():
     df = titanic_fg.read()
     #print(df)
     label = int(df.iloc[-offset]["survived"])
-    label_path =  "../img/" + str(label) + ".png"
-    img = Image.open(label_path, mode='r')
+
+    label_url = "https://raw.githubusercontent.com/scalable-ml-deep-learning/serverless-ml-for-titanic/feature-brando/img/" + str(label) + ".png"
+    img = Image.open(requests.get(label_url, stream=True).raw)  
+    #label_path =  "../img/" + str(label) + ".png"
+    #img = Image.open(label_path, mode='r')
+
     print("Passenger actual: ", label)
     img.save("./actual_passenger.png")
     dataset_api.upload("./actual_passenger.png", "Resources/images", overwrite=True)
@@ -91,7 +98,7 @@ def g():
     print("Number of different passenger predictions to date: " + str(predictions.value_counts().count()))
     if predictions.value_counts().count() == 2:
         results = confusion_matrix(labels, predictions)
-    
+        print("Confusion matrix: ", results)
         df_cm = pd.DataFrame(results, ['True Survived', 'True Dead'],
                          ['Pred Survived', 'Pred Dead'])
     
