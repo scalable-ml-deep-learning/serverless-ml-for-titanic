@@ -20,14 +20,14 @@ def generate_passenger(survived):
     import random
     if survived :
         df = pd.DataFrame({ "pclass": [random.choice([2,1])],
-                        "sex": [random.choice([0,1])], #male:1, female:0
-                        "age": [random.uniform(20, 35)],
+                        "sex": [random.choice([0,1])],
+                        "age": [random.uniform(0, 99)],
                         "fare": [random.uniform(50, 500)]
                         })
     else:
         df = pd.DataFrame({ "pclass": [random.choice([3,2])],
-                        "sex": [random.choice([0,1])], #male:1, female:0
-                        "age": [random.uniform(25, 35)],
+                        "sex": [random.choice([0,1])],
+                        "age": [random.uniform(0, 99)],
                         "fare": [random.uniform(0, 50)]
                         })
     df['survived'] = survived

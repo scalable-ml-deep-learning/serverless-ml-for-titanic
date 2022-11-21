@@ -1,7 +1,6 @@
 import os
 import modal
 
-#AT THE END SET TO FALSE    
 LOCAL=True
 
 if LOCAL == False:
@@ -40,11 +39,10 @@ def g():
     #print(y_pred)
     offset = 1
     passenger = y_pred[y_pred.size-offset]
-    passenger_url = "serverless-ml-for-titanic/img/" + str(passenger) + ".png"
-    #flower_url = "https://raw.githubusercontent.com/featurestoreorg/serverless-ml-course/main/src/01-module/assets/" + flower + ".png"
     print("Passenger predicted: ", passenger)
-    img = Image.open(requests.get(passenger_url, stream=True).raw)    
-    img = passenger_url
+    
+    passenger_path =  "../img/" + str(passenger) + ".png"
+    img = Image.open(passenger_path, mode='r')
     img.save("./latest_passenger.png")
     dataset_api = project.get_dataset_api()
     dataset_api.upload("./latest_passenger.png", "Resources/images", overwrite=True)
@@ -53,11 +51,10 @@ def g():
     titanic_fg = fs.get_feature_group(name="titanic_modal", version=1)
     df = titanic_fg.read()
     #print(df)
-    label = df.iloc[-offset]["survived"]
-    label_url = "serverless-ml-for-titanic/img/" + str(label) + ".png"
-    #label_url = "https://raw.githubusercontent.com/featurestoreorg/serverless-ml-course/main/src/01-module/assets/" + label + ".png"
+    label = int(df.iloc[-offset]["survived"])
+    label_path =  "../img/" + str(label) + ".png"
+    img = Image.open(label_path, mode='r')
     print("Passenger actual: ", label)
-    img = Image.open(requests.get(label_url, stream=True).raw)            
     img.save("./actual_passenger.png")
     dataset_api.upload("./actual_passenger.png", "Resources/images", overwrite=True)
     
