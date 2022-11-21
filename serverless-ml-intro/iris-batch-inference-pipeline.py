@@ -1,10 +1,10 @@
 import os
 import modal
     
-LOCAL=True
+LOCAL=False
 
 if LOCAL == False:
-   stub = modal.Stub()
+   stub = modal.Stub("iris_batch_daily")
    hopsworks_image = modal.Image.debian_slim().pip_install(["hopsworks==3.0.4","joblib","seaborn","scikit-learn","dataframe-image"])
    @stub.function(image=hopsworks_image, schedule=modal.Period(days=1), secret=modal.Secret.from_name("scalable"))
    def f():
@@ -34,6 +34,7 @@ def g():
     feature_view = fs.get_feature_view(name="iris_modal", version=1)
     batch_data = feature_view.get_batch_data()
     
+    #here we take the last uploaded flower and we predict its variaty and save the predicted image
     y_pred = model.predict(batch_data)
     #print(y_pred)
     offset = 1
@@ -45,8 +46,9 @@ def g():
     dataset_api = project.get_dataset_api()    
     dataset_api.upload("./latest_iris.png", "Resources/images", overwrite=True)
    
+   #here we take the actual last inserted flower of the feature group and we save its image
     iris_fg = fs.get_feature_group(name="iris_modal", version=1)
-    df = iris_fg.read() 
+    df = iris_fg.read()
     #print(df)
     label = df.iloc[-offset]["variety"]
     label_url = "https://raw.githubusercontent.com/featurestoreorg/serverless-ml-course/main/src/01-module/assets/" + label + ".png"
@@ -55,6 +57,7 @@ def g():
     img.save("./actual_iris.png")
     dataset_api.upload("./actual_iris.png", "Resources/images", overwrite=True)
     
+    #write a dataframe with the date of last prediction
     monitor_fg = fs.get_or_create_feature_group(name="iris_predictions",
                                                 version=1,
                                                 primary_key=["datetime"],
@@ -76,7 +79,7 @@ def g():
     history_df = pd.concat([history_df, monitor_df])
 
 
-    df_recent = history_df.tail(4)
+    df_recent = history_df.tail(4) #take last 4 rows of our dataframe
     dfi.export(df_recent, './df_recent.png', table_conversion = 'matplotlib')
     dataset_api.upload("./df_recent.png", "Resources/images", overwrite=True)
     
@@ -99,10 +102,10 @@ def g():
         print("You need 3 different flower predictions to create the confusion matrix.")
         print("Run the batch inference pipeline more times until you get 3 different iris flower predictions") 
 
-
 if __name__ == "__main__":
     if LOCAL == True :
         g()
     else:
+        stub.deploy("iris_batch_daily")
         with stub.run():
             f()
