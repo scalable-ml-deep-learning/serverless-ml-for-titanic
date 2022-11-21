@@ -9,3 +9,13 @@ serverless-ml-intro/actual_iris.png
 serverless-ml-intro/latest_iris.png
 serverless-ml-intro/confusion_matrix.png
 serverless-ml-intro/df_recent.png
+
+# In src
+src/.*
+src/ca_chain
+src/certfile
+src/keyfile
+src/actual_iris.png
+src/latest_iris.png
+src/confusion_matrix.png
+src/df_recent.png
