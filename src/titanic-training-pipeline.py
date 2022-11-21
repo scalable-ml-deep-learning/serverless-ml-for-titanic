@@ -56,13 +56,12 @@ def g():
     metrics = classification_report(y_test, y_pred, output_dict=True)
     results = confusion_matrix(y_test, y_pred)
 
-    '''
+    #REVIEW THE CONFUSION MATRIX!!!
     # Create the confusion matrix as a figure, we will later store it as a PNG image file
-    df_cm = pd.DataFrame(results, ['True Setosa', 'True Versicolor', 'True Virginica'],
-                         ['Pred Setosa', 'Pred Versicolor', 'Pred Virginica'])
+    df_cm = pd.DataFrame(results, ['True Survived', 'True Dead'],
+                         ['Pred Survived', 'Pred Dead'])
     cm = sns.heatmap(df_cm, annot=True)
     fig = cm.get_figure()
-    '''
 
     # We will now upload our model to the Hopsworks Model Registry. First get an object for the model registry.
     mr = project.get_model_registry()
@@ -74,7 +73,7 @@ def g():
 
     # Save both our model and the confusion matrix to 'model_dir', whose contents will be uploaded to the model registry
     joblib.dump(model, model_dir + "/titanic_model.pkl")
-    #fig.savefig(model_dir + "/confusion_matrix.png")    
+    fig.savefig(model_dir + "/confusion_matrix.png")    
 
     # Specify the schema of the model's input/output using the features (X_train) and labels (y_train)
     input_schema = Schema(X_train)
